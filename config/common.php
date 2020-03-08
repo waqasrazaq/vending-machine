@@ -15,4 +15,9 @@ return [
     'error_inventory_item_count_required' => 'item_count is required field',
     'error_inventory_item_count_numeric' => 'item_count must be numeric and greater than or equal to 0',
 
+    'error_wallet_coins_required' => 'coins is required field',
+    'error_wallet_coins_list' => 'coins must be a list',
+
+
+
 ];

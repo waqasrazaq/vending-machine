@@ -53,4 +53,9 @@ class VendingMachine
 
         return $item_price_output && $item_count_output;
     }
+
+    public function addCoinsToWallet($coins)
+    {
+        return $this->inMemoryStore->addMultipleItemsToList(config('common.available_change_key'), $coins);
+    }
 }

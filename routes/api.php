@@ -23,3 +23,6 @@ Route::get('payments', 'PaymentController@getAddedMoney');
 
 Route::post('items', 'InventoryController@addNewItem');
 
+Route::post('changes', 'WalletController@addCoinsInAvailableChange');
+
+

@@ -14,7 +14,7 @@ class RedisMemoryRepository implements IMemoryRepository
     /**
      * @param $listKey
      * @param $item
-     * @return bool|mixed
+     * @return bool
      */
     public function addItemToList($listKey, $item)
     {
@@ -30,7 +30,7 @@ class RedisMemoryRepository implements IMemoryRepository
     /**
      * @param $listKey
      * @param $item
-     * @return bool|mixed
+     * @return bool
      */
     public function removeItemFromList($listKey, $item)
     {
@@ -75,11 +75,29 @@ class RedisMemoryRepository implements IMemoryRepository
      * @param $field
      * @return mixed|null
      */
-    public function getFieldValueFromObject($key, $field) {
+    public function getFieldValueFromObject($key, $field)
+    {
         try {
             return Redis::hGet($key, $field);
         } catch (Exception $e) {
             return null;
         }
+    }
+
+    /**
+     * @param $listKey
+     * @param $items
+     * @return bool
+     */
+    public function addMultipleItemsToList($listKey, $items)
+    {
+        try {
+            for($i=0; $i<sizeof($items); $i++) {
+                Redis::lPush($listKey, $items[$i]);
+            }
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
     }
 }

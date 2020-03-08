@@ -16,4 +16,6 @@ interface IMemoryRepository
     public function addFieldToObject($key, $field, $value);
 
     public function getFieldValueFromObject($key, $field);
+
+    public function addMultipleItemsToList($listKey, $items);
 }
