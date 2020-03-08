@@ -25,5 +25,6 @@
         <server name="MAIL_MAILER" value="array"/>
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>
+        <env name="REDIS_HOST" value="127.0.0.1"/>
     </php>
 </phpunit>
