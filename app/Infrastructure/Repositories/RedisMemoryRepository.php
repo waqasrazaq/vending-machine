@@ -3,6 +3,7 @@ namespace App\Infrastructure\Repositories;
 
 use App\Infrastructure\Contracts\IMemoryRepository;
 use Illuminate\Support\Facades\Redis;
+use Exception;
 
 /**
  * Class RedisMemoryRepository
@@ -13,48 +14,72 @@ class RedisMemoryRepository implements IMemoryRepository
     /**
      * @param $listKey
      * @param $item
-     * @return mixed|void
+     * @return bool|mixed
      */
     public function addItemToList($listKey, $item)
     {
-        Redis::lPush($listKey, $item);
+        try {
+            Redis::lPush($listKey, $item);
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
+
     }
 
     /**
      * @param $listKey
      * @param $item
-     * @return mixed|void
+     * @return bool|mixed
      */
     public function removeItemFromList($listKey, $item)
     {
-        Redis::lPush($listKey, $item);
+        try {
+            Redis::lPush($listKey, $item);
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
     }
 
     /**
      * @param $listKey
-     * @return mixed
+     * @return array|mixed
      */
     public function getAllListItems($listKey) {
-        return Redis::lRange($listKey, 0, -1);
+        try {
+            return Redis::lRange($listKey, 0, -1);
+        } catch (Exception $e) {
+            return [];
+        }
     }
 
     /**
      * @param $key
      * @param $field
      * @param $value
-     * @return mixed|void
+     * @return bool|mixed
      */
     public function addFieldToObject($key, $field, $value)
     {
-        Redis::hSet($key, $field, $value);
+        try {
+            Redis::hSet($key, $field, $value);
+        } catch(Exception $e) {
+            return false;
+        }
+        return true;
     }
 
     /**
      * @param $key
      * @param $field
-     * @return mixed
+     * @return mixed|null
      */
     public function getFieldValueFromObject($key, $field) {
-        return Redis::hGet($key, $field);
+        try {
+            return Redis::hGet($key, $field);
+        } catch (Exception $e) {
+            return null;
+        }
     }
 }
