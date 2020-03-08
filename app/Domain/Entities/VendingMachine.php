@@ -3,8 +3,11 @@
 namespace App\Domain\Entities;
 
 use App\Infrastructure\Contracts\IMemoryRepository;
-use App\Infrastructure\Repositories\RedisMemoryRepository;
 
+/**
+ * Class VendingMachine
+ * @package App\Domain\Entities
+ */
 class VendingMachine
 {
     private  $inMemoryStore;
@@ -128,5 +131,4 @@ class VendingMachine
         }
         return null;
     }
-
 }
