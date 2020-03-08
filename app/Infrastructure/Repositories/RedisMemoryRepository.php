@@ -44,13 +44,13 @@ class RedisMemoryRepository implements IMemoryRepository
 
     /**
      * @param $listKey
-     * @return array|mixed
+     * @return bool
      */
     public function getAllListItems($listKey) {
         try {
             return Redis::lRange($listKey, 0, -1);
         } catch (Exception $e) {
-            return [];
+            return false;
         }
     }
 

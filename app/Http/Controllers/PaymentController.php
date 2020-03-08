@@ -38,6 +38,6 @@ class PaymentController extends Controller
         $vendingMachine = VendingMachine::createWithRepository($this->repo);
         $output = $vendingMachine->getAddedMoney();
 
-        return response()->json(array("results"=>$output), $output===true ? JsonResponse::HTTP_OK : JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        return response()->json(array("results"=>$output), $output===false ? JsonResponse::HTTP_INTERNAL_SERVER_ERROR : JsonResponse::HTTP_OK);
     }
 }
