@@ -18,6 +18,7 @@ return [
     'error_wallet_coins_required' => 'coins is required field',
     'error_wallet_coins_list' => 'coins must be a list',
 
-
-
+    'error_not_enough_change' => 'Not enough change to return',
+    'error_not_enough_amount' => 'Amount is not enough',
+    'error_not_enough_amount_inventory' => 'Amount is less or not enough inventory',
 ];

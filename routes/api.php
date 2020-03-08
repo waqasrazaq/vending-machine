@@ -20,9 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('payments', 'PaymentController@insertMoney');
 Route::get('payments', 'PaymentController@getAddedMoney');
-
-Route::post('items', 'InventoryController@addNewItem');
-
 Route::post('changes', 'WalletController@addCoinsInAvailableChange');
+Route::post('products', 'ProductController@addNewProduct');
+Route::get('products/{name}', 'ProductController@getProduct');
+
 
 

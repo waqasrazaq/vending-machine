@@ -29,13 +29,15 @@ class RedisMemoryRepository implements IMemoryRepository
 
     /**
      * @param $listKey
-     * @param $item
+     * @param $items
      * @return bool
      */
-    public function removeItemFromList($listKey, $item)
+    public function removeItemsFromList($listKey, $items)
     {
         try {
-            Redis::lPush($listKey, $item);
+            for ($i=0; $i<sizeof($items); $i++) {
+                Redis::lRem($listKey, 1, $items[$i]);
+            }
         } catch (Exception $e) {
             return false;
         }
@@ -46,7 +48,8 @@ class RedisMemoryRepository implements IMemoryRepository
      * @param $listKey
      * @return bool
      */
-    public function getAllListItems($listKey) {
+    public function getAllListItems($listKey)
+    {
         try {
             return Redis::lRange($listKey, 0, -1);
         } catch (Exception $e) {

@@ -9,7 +9,7 @@ interface IMemoryRepository
 
     public function addItemToList($listKey, $item);
 
-    public function removeItemFromList($listKey, $item);
+    public function removeItemsFromList($listKey, $items);
 
     public function getAllListItems($listKey);
 
