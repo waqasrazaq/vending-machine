@@ -32,7 +32,7 @@ class VendingMachine
      */
     public function insertMoney($money)
     {
-        return $this->inMemoryStore->addItemToList(config('common.inserted_coins_key'), $money);
+        return $this->inMemoryStore->addItemToList('current_coins', $money);
     }
 
     /**
@@ -40,7 +40,7 @@ class VendingMachine
      */
     public function getAddedMoney()
     {
-        return $this->inMemoryStore->getAllListItems(config('common.inserted_coins_key'));
+        return $this->inMemoryStore->getAllListItems("current_coins");
     }
 
     /**
@@ -51,8 +51,8 @@ class VendingMachine
      */
     public function addProductToInventory($item_name, $price, $count)
     {
-        $item_price_output = $this->inMemoryStore->addFieldToObject(config('common.available_items')."_".$item_name, "item_price", $price);
-        $item_count_output = $this->inMemoryStore->addFieldToObject(config('common.available_items')."_".$item_name, "item_count", $count);
+        $item_price_output = $this->inMemoryStore->addFieldToObject("items_".$item_name, "item_price", $price);
+        $item_count_output = $this->inMemoryStore->addFieldToObject("items_".$item_name, "item_count", $count);
 
         return $item_price_output && $item_count_output;
     }
@@ -63,7 +63,7 @@ class VendingMachine
      */
     public function addCoinsToWallet($coins)
     {
-        return $this->inMemoryStore->addMultipleItemsToList(config('common.available_change_key'), $coins);
+        return $this->inMemoryStore->addMultipleItemsToList('available_change', $coins);
     }
 
     /**
@@ -72,25 +72,25 @@ class VendingMachine
      */
     public function getProduct($productName)
     {
-        $productCount = $this->inMemoryStore->getFieldValueFromObject(config('common.available_items')."_".$productName, "item_count");
-        $productPrice = $this->inMemoryStore->getFieldValueFromObject(config('common.available_items')."_".$productName, "item_price");
+        $productCount = $this->inMemoryStore->getFieldValueFromObject("items"."_".$productName, "item_count");
+        $productPrice = $this->inMemoryStore->getFieldValueFromObject("items"."_".$productName, "item_price");
         $insertedCoins = $this->getAddedMoney();
         $totalInsertedAmount = array_sum($insertedCoins);
 
         if ($totalInsertedAmount>0 && $productCount!=false && $productCount>0) {
             if ($totalInsertedAmount==$productPrice) { // Where inserted amount is exactly equal to the product price
-                $this->inMemoryStore->addFieldToObject(config('common.available_items')."_".$productName, "item_count", $productCount-1);
-                $this->inMemoryStore->removeItemsFromList(config('common.inserted_coins_key'), $insertedCoins);
+                $this->inMemoryStore->addFieldToObject("items"."_".$productName, "item_count", $productCount-1);
+                $this->inMemoryStore->removeItemsFromList("current_coins", $insertedCoins);
                 return $productName;
             } else if ($totalInsertedAmount>$productPrice)  {
                 $amountToReturn = $totalInsertedAmount-$productPrice;
-                $availableChange = $this->inMemoryStore->getAllListItems(config('common.available_change_key'));
+                $availableChange = $this->inMemoryStore->getAllListItems('available_change');
                 $changeToReturn = $this->calculateChange(array_merge($insertedCoins, $availableChange), $amountToReturn, 0);
                 if ($changeToReturn!=null && sizeof($changeToReturn)>0) {
-                    $this->inMemoryStore->addFieldToObject(config('common.available_items')."_".$productName, "item_count", $productCount-1);
-                    $this->inMemoryStore->addMultipleItemsToList(config('common.available_change_key'), $insertedCoins);
-                    $this->inMemoryStore->removeItemsFromList(config('common.available_change_key'), $changeToReturn);
-                    $this->inMemoryStore->removeItemsFromList(config('common.inserted_coins_key'), $insertedCoins);
+                    $this->inMemoryStore->addFieldToObject("items"."_".$productName, "item_count", $productCount-1);
+                    $this->inMemoryStore->addMultipleItemsToList("available_change", $insertedCoins);
+                    $this->inMemoryStore->removeItemsFromList("available_change", $changeToReturn);
+                    $this->inMemoryStore->removeItemsFromList("current_coins", $insertedCoins);
                     return implode(", ", $changeToReturn).", ".$productName;
                 } else  {
                     return config('common.error_not_enough_change');

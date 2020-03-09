@@ -41,10 +41,10 @@ class PaymentControllerTest extends TestCase
         $this->assertGreaterThanOrEqual(3, sizeof($response["results"]));
     }
 
-    public function tearDown():void
+    public static function tearDownAfterClass(): void
     {
         $redis = new RedisMemoryRepository();
-        $redis->removeItemsFromList(config('common.inserted_coins_key'), [0.05,0.05,0.05,0.05]);
-        parent::tearDown();
+        $redis->removeItemsFromList('current_coins', [0.05,0.05,0.05,0.05]);
+        parent::tearDownAfterClass();
     }
 }

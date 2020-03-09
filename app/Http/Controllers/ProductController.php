@@ -7,7 +7,6 @@ use App\Http\Requests\AddProductRequest;
 use App\Http\Requests\GetProductRequest;
 use App\Infrastructure\Contracts\IMemoryRepository;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 /**
  * Class ProductController
@@ -50,5 +49,4 @@ class ProductController extends Controller
 
         return response()->json(array("results"=>$output),JsonResponse::HTTP_OK);
     }
-
 }
