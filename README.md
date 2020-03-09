@@ -8,7 +8,7 @@
 
 ## Prerequisites
 
-Make sure **Docker** (with docker-compose) and Git are already installed/running on the system. If not then follow the instructions to download and install it from the below link
+Make sure **Docker** (with docker-compose) and **Git** are already installed/running on the system. If not then follow the instructions to download and install it from the below link
 * [Docker](https://www.docker.com/)
 * [Git](https://git-scm.com/downloads)
 
