@@ -26,9 +26,11 @@ git clone --recurse-submodules -j8 https://github.com/waqasrazaq/vending-machine
 ```
  cd laradock
  ```
-and then below command
+and then below commands
 
 ```
+cp env-example .env
+
 docker-compose up -d nginx redis
 ```
 
