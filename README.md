@@ -1,78 +1,151 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+# Vending Machine
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+## Technologies Used
+* PHP 7.2
+* Laravel Framework 7.0.6
+* Redis 
+* LaraDock
 
-## About Laravel
+## Prerequisites
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Make sure **Docker** (with docker-compose) and Git are already installed/running on the system. If not then follow the instructions to download and install it from the below link
+* [Docker](https://www.docker.com/)
+* [Git](https://git-scm.com/downloads)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Installation
+The installation process is quite simple and straightforward. Just follow the below steps
 
-## Learning Laravel
+1- Clone the shared repo in any local directory using below command
+```
+git clone https://github.com/waqasrazaq/vending-machine.git
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+2- From the project root directory, navigate into Laradock
+ 
+```
+ cd laradock
+ ```
+and then below command
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```
+docker-compose up -d nginx redis
+```
 
-## Laravel Sponsors
+It will bring up all the required containers (e.g. PHP, NGINX, Redis) to run the application.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+3-  Enter into workspace using below command
+```
+docker-compose exec workspace bash
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [OP.GG](https://op.gg)
+4- Finally run the below command to install the project dependencies/libraries
+```
+composer install
+```
 
-## Contributing
+That's it. Our vending-machine application is installed and configured. Should be available at http://localhost
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+## End Points
+Vending machine actions are based on Restful Api. Below are end points to use the machine
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**1- Insert Coin**: 
 
-## Security Vulnerabilities
+Method: Post
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Example URL http://localhost/api/payments
 
-## License
+Payload: JSON Object as below. Valid coins are 0.05, 0.10, 0.25, 1. 
+```
+{ "coin": 0.25 }
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+For valid response, HTTP status code 200 with object {"results":true} and status code 500 in case of any error on the server 
+
+
+**2- Get Back Entered Coins** 
+
+Method: Get 
+
+Example URL http://localhost/api/payments
+
+For valid response, HTTP status code 200 with the list of entered coins and status code 500 in case any error on the server.
+
+**3- Add Available Change** 
+
+Method: Post 
+
+Example URL http://localhost/api/changes
+
+Payload: JSON Object as below. 
+```
+{
+	"coins": [0.05, 0.1, 0.25, 1]
+}
+```
+**4- Add A New Product** 
+
+Method: Post 
+
+Example URL http://localhost/api/products
+Payload: JSON Object as below. 
+
+```
+{
+	"item_name": 2,
+	"item_price": 0.65,
+	"item_count": 10
+}
+```
+**5- Get An Item** 
+
+Method: Get
+
+Example URLs http://localhost/api/products/water, http://localhost/api/products/juice, http://localhost/api/products/soda
+
+Successful response will be as below otherwise erorr messages will be returned with proper status codes
+```
+{
+    "results": "0.25, 0.1, water"
+}
+```
+
+Call these services in correct order for example, first set available change, Add some new products, Insert coin (1 or multiple times) to purchase and Get and item.
+
+
+## A brief introduction to project structure
+Although the information below on the application structure is very brief, but it gives a starting point for the developers to work on the project
+
+
+* **routes/api.php** Contains the routes for both end points
+
+* **app/Http/Controllers** All controller files inside this directory handles the end points 
+
+* **app/Domain/Entities/VendingMachine.php** Manage the business logic of vending machine, Also a middle man between controllers and models
+
+* **app/Http/Requests** These files Contains custom validator for different type of request inputs. It validates request parameters (payload) before even starting the business logic
+
+* **app/Infrastructure/Repositories and Contracts** Directories holds the storage repos. InMemoryStore (based on Redis) via Repository pattern
+
+* **config/common.php** Holds configuration variables
+
+* **test/Feature/** Folder contains the files for end point test cases
+
+* **vendor** - Contains all the composer dependencies
+
+For more details on the files structure, follow this docs https://laravel.com/docs/ link.
+
+### Execute Tests
+Execute below command to run the tests
+```
+./vendor/bin/phpunit
+```
+
+####Note: 
+Current test cases covers only features testing. It can definitely be enhanced more and add more coverage including unit test cases as well. 
+
+## References
+Below link contains the best practices (Design principles and Design patterns specific to Laravel) and Coding standards which i have followed in this project. 
+
+http://www.laravelbestpractices.com/
