@@ -18,7 +18,7 @@ The installation process is quite simple and straightforward. Just follow the be
 
 1- Clone the shared repo in any local directory using below command
 ```
-git clone https://github.com/waqasrazaq/vending-machine.git
+git clone --recurse-submodules -j8 https://github.com/waqasrazaq/vending-machine.git
 ```
 
 2- From the project root directory, navigate into Laradock
